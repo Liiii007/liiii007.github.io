@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>使用VSCode+服务器实现近乎本地的编程体验</title>
+    <link href="/2022/07/26/%E4%BD%BF%E7%94%A8VSCode-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%9E%E7%8E%B0%E8%BF%91%E4%B9%8E%E6%9C%AC%E5%9C%B0%E7%9A%84%E7%BC%96%E7%A8%8B%E4%BD%93%E9%AA%8C/"/>
+    <url>/2022/07/26/%E4%BD%BF%E7%94%A8VSCode-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%9E%E7%8E%B0%E8%BF%91%E4%B9%8E%E6%9C%AC%E5%9C%B0%E7%9A%84%E7%BC%96%E7%A8%8B%E4%BD%93%E9%AA%8C/</url>
+    
+    <content type="html"><![CDATA[<p><img src="https://cdn.jsdelivr.net/gh/Liiii007/LiquidBlog@main/img/Eyh73GnVcAE6E5T.jpg"></p><p>VSCode，一个近乎全能的IDE，上天下地无所不能。我写python代码和markdown文章的第一步几乎都是启动VSCode，经过了将近一年的使用，我已经完全习惯了使用VSCode的工作流。恰逢最近新购入了一台云服务器，我想，与其用XShell等又大又不好看的ssh软件，不如将云服务器的ssh和文件管理都集成到VSCode中来。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>你好，世界</title>
+    <link href="/2022/07/26/hello-world/"/>
+    <url>/2022/07/26/hello-world/</url>
+    
+    <content type="html"><![CDATA[<p>一个小世界的诞生</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  
+</search>
