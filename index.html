@@ -189,7 +189,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-04 19:19:06" itemprop="dateModified" datetime="2022-08-04T19:19:06+08:00">2022-08-04</time>
+                <time title="修改时间：2022-08-04 19:28:36" itemprop="dateModified" datetime="2022-08-04T19:28:36+08:00">2022-08-04</time>
               </span>
 
           
@@ -204,10 +204,11 @@
 
       
           <h1 id="一点小想法"><a href="#一点小想法" class="headerlink" title="一点小想法"></a>一点小想法</h1><p>随着比赛项目的完工，我终于有时间来写写自己对于游戏编程的想法啦！</p>
-<p>如你们所见，这里是Liiii00的第一篇想法，这里我想开一个新坑来聊一聊我在架构游戏的时候的一些感受与踩过的坑，希望有所帮助，希望大佬轻喷….这里大概只会有几篇文章的篇幅，但都是花费了非常多时间码代码跑测试之后的血与泪。</p>
+<p>如你们所见，这里是Liiii00的第一篇想法，这里我想开一个新坑来聊一聊我在架构游戏的时候的一些感受与踩过的坑，希望有所帮助，希望大佬轻喷….这里大概只会有几篇文章的篇幅，背后是花费了非常多时间来码代码跑测试的血与泪。</p>
 <p>如你们所见，这一篇文章我想讲讲最近才加入的统一的触发系统，我们用这个实现了事件触发，使得游戏内的玩法变成了近乎组件化的构建方式，极大地增加了工作效率与减少了修改代码的次数。当然这里还有很多不足，不过对于我的小游戏，已经够用了。</p>
 <h1 id="起点"><a href="#起点" class="headerlink" title="起点"></a>起点</h1><p>软件工程里有一句话：<strong>对修改关闭，对扩展开放</strong>。这套触发系统就是基于这样的原则进行构建的。对于游戏而言，实现一个feature经常需要几个脚本配合使用，起初我们使用的是原始的all in one架构，一个脚本写完所有东西，结果就是一个三四百行的代码里面有数不清的逻辑关系，数不清的编辑器接口，以及数不清的bug，比如我们所使用的控制人物运动的脚本（我也不会去重构它了，这里面的东西应该是不会再改）</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Liiii007/LiquidBlog@main/img/20220731112638.png"><br>(你能分清什么控制的什么吗？反正我是不敢碰这东西…..)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Liiii007/LiquidBlog@main/img/20220731112638.png"></p>
+<p>(你能分清什么控制的什么吗？反正我是不敢碰这东西…..)</p>
 <h1 id="小改进"><a href="#小改进" class="headerlink" title="小改进"></a>小改进</h1><p>再后来，我们把一些常用的组件拆开了，比如控制材质渐变的组件，自定义的球形触发器（这里包含了unity物理系统的巨坑，在bug篇中会再说一说，先挖个坑）</p>
 <p><img src="https://cdn.jsdelivr.net/gh/Liiii007/LiquidBlog@main/img/20220731112913.png"></p>
 <p>比如这一个染色墙，挂载了一个染色的功能，有一个当前颜色的参数，还有一个Shader Progressor组件用以产生反馈。是不是就比之前的简洁多了？</p>
@@ -216,7 +217,7 @@
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TriggerSource</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//一堆待触发的对象</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;GameObject&gt; triggerObjects = <span class="keyword">new</span> List&lt;GameObject&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//触发与撤回接口</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">TriggerAll</span>()</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">StopAll</span>()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">ITriggerable</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//接口必须实现的两个函数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Trigger</span>()</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Stop</span>()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>非常简单</p>
-<p>在此，被触发的物体继承 <code>ITriggerable</code> 接口, 触发源继承 <code>TriggerSource</code> 即可。这里一个用类继承一个用接口定义的原因是：接口里只能指定必须实现的函数，不能放变量，所以对于触发源来说，直接用一个类去同时存方法和变量是比较合适的。同时，因为有统一的触发接口的存在，触发源的两个函数实际上都可以根据游戏逻辑在子类直接调用，不需要修改，因此也就不需要再套一层接口。由于C#并不支持多继承（可以多接口），所以触发源类直接继承了Unity的 <code>MonoBehaviour</code>,子类脚本再继承触发源即可。这样做虽然有点暴力，对于小游戏来说也是足够用了。</p>
+<p>在此，被触发的物体继承 <code>ITriggerable</code> 接口, 触发源继承 <code>TriggerSource</code> 即可。这里一个用类继承一个用接口定义的原因是：接口里只能指定必须实现的函数，不能放变量，所以对于触发源来说，直接用一个类去同时存方法和变量是比较合适的。同时，因为有统一的触发接口的存在，触发源的两个函数实际上都可以根据游戏逻辑在子类直接调用，不需要修改，因此也就不需要再套一层接口。由于C#并不支持<strong>多继承</strong>（可以多接口），所以触发源类直接继承了Unity的 <code>MonoBehaviour</code>,子类脚本再继承触发源即可。这样做虽然有点暴力，对于小游戏来说也是足够用了。</p>
 <p>至此，接口定义就填充完毕了。</p>
 <p>再来看看<code>TriggerAll()</code>方法的实现：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">TriggerAll</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> obj <span class="keyword">in</span> triggerObjects)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">var</span> component <span class="keyword">in</span> obj.GetComponents&lt;ITriggerable&gt;())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (component != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123; component.Trigger(); &#125;</span><br><span class="line">                <span class="keyword">catch</span>(Exception e) &#123; Debug.LogError(e); &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> Debug.LogError(obj.name + <span class="string">&quot;没有可触发对象，&quot;</span> + gameObject.name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -227,7 +228,7 @@
 <p>好用！！！</p>
 <h1 id="自问自答"><a href="#自问自答" class="headerlink" title="自问自答"></a>自问自答</h1><p>为什么是GameObject？在设计的时候我发现有些物体上可能会挂有两个触发器，这时候只需要将一个物体加进触发源，再告诉Unity：在这个物体里找出所有的触发器，然后给我触发，就能解决这个问题。减少了出错的概率，鲁棒性++。</p>
 <p>为什么用上了try-catch？这是因为每一个触发器都不太能保证不出错，没有异常处理的话，一旦前面的某个脚本报错了（比如null错误），后面的脚本都会停下来，实际看到的就会是有一些效果触发了而一些还不会触发。在我的开发中，大约30%的时间都在解决这类bug，如果早点写这个东西就能省下不少时间了….（哭。异常处理是很重要的，包括用委托的时候也是（加进委托的函数务必多使用try-catch，不然一个error就会中断整个Invoke），给每个调用函数都加一个try，即使在catch中什么都不做，也能很快地定位问题所在。加在foreach的最里层也会使每个触发器都独立地被触发，阻断了错误的外散，鲁棒性up。</p>
-<p>性能？前面提到的两层循环，其实这也不是问题，因为触发的对象并不多，在我们的小游戏里最多只有五个触发器，所以不用太在意性能的问题。事实上这个系统也十分给力，因为它只会在需要的时候触发一次，并不会每帧里都触发，除了MonoBehavior的消耗都不是事。</p>
+<p>性能不会有问题吗？前面提到的两层循环其实也不是什么太大的问题，因为触发的对象并不多，在我们的小游戏里最多只有五个触发器，所以不用太在意性能的问题。事实上这个系统也十分给力，因为它只会在需要的时候触发一次，并不会每帧里都触发，除了MonoBehavior的消耗都不是事。</p>
 <p>剩下的改进，不改了，挺好用了嘿嘿嘿</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这段时间的开发下来，我发现很多时候开发效率和异常处理都要远远比榨干那一点性能要重要。要知道，我写的代码基本上是0GC，花费的时间在profiler里显示的是0.00ms，其实真的没必要太省CPU。（最后打包出来CPU占用10%不到，还包括系统自己用的资源和图形层，物理层的开销）。有一句话感触真的很深：过早的优化是万恶之源。这个触发器虽然有着这样那样的问题，但却是现阶段我自己写过的最好用的东西了。这努力花得值，生产方式喜加一。</p>
 
